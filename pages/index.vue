@@ -24,11 +24,11 @@ export default {
     this.api = await ApiPromise.create({ provider: wsProvider })
     this.unsubscribe = await this.api.rpc.chain.subscribeNewHeads((header) => {
       // eslint-disable-next-line
-      console.log(`Chain is at block: #${header.number}`)
-      this.items.push({ blockNumber: header.number })
+      console.log(`New block: #${header.number}`)
+      this.items.push({ blockNumber: header.number, hash: header.hash })
     })
   },
-  beforeDestroy: () => {
+  beforeDestroy() {
     this.unsubscribe()
   },
 }
