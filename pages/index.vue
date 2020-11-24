@@ -16,11 +16,16 @@
       <b-button variant="danger">Button</b-button>
       <b-button variant="success">Button</b-button>
       <b-button variant="outline-primary">Button</b-button>
+
+      <h2 class="my-4">Último bloque de Kusama</h2>
+
+      <pre>{{ JSON.stringify(lastBlock, null, 2) }}</pre>
     </div>
   </div>
 </template>
 
 <script>
+import { ApiPromise, WsProvider } from '@polkadot/api'
 export default {
   data() {
     return {
@@ -30,7 +35,16 @@ export default {
         { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
         { age: 38, first_name: 'Jami', last_name: 'Carney' },
       ],
+      api: undefined,
+      lastBlock: undefined,
     }
+  },
+  async created() {
+    const nodeWs = 'wss://kusama-rpc.polkadot.io'
+    const wsProvider = new WsProvider(nodeWs)
+    this.api = await ApiPromise.create({ provider: wsProvider })
+    const { block } = await this.api.rpc.chain.getBlock()
+    this.lastBlock = block
   },
 }
 </script>
@@ -40,9 +54,6 @@ export default {
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
 .title {
