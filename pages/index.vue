@@ -3,23 +3,7 @@
     <div>
       <Logo />
       <h1 class="title">Mini taller de desarrollo de dApps sobre Substrate</h1>
-
-      <b-alert show>Default Alert</b-alert>
-
-      <b-alert variant="success" show>Success Alert</b-alert>
-
-      <b-alert variant="danger" show dismissible>Dismissible Alert!</b-alert>
-
       <b-table striped hover :items="items"></b-table>
-
-      <b-button>Button</b-button>
-      <b-button variant="danger">Button</b-button>
-      <b-button variant="success">Button</b-button>
-      <b-button variant="outline-primary">Button</b-button>
-
-      <h2 class="my-4">Último bloque de Kusama</h2>
-
-      <pre>{{ JSON.stringify(lastBlock, null, 2) }}</pre>
     </div>
   </div>
 </template>
@@ -29,22 +13,23 @@ import { ApiPromise, WsProvider } from '@polkadot/api'
 export default {
   data() {
     return {
-      items: [
-        { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-        { age: 38, first_name: 'Jami', last_name: 'Carney' },
-      ],
+      items: [],
       api: undefined,
-      lastBlock: undefined,
+      unsubscribe: undefined,
     }
   },
   async created() {
     const nodeWs = 'wss://kusama-rpc.polkadot.io'
     const wsProvider = new WsProvider(nodeWs)
     this.api = await ApiPromise.create({ provider: wsProvider })
-    const { block } = await this.api.rpc.chain.getBlock()
-    this.lastBlock = block
+    this.unsubscribe = await this.api.rpc.chain.subscribeNewHeads((header) => {
+      // eslint-disable-next-line
+      console.log(`Chain is at block: #${header.number}`)
+      this.items.push({ blockNumber: header.number })
+    })
+  },
+  beforeDestroy: () => {
+    this.unsubscribe()
   },
 }
 </script>
