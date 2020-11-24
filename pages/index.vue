@@ -2,31 +2,37 @@
   <div class="container">
     <div>
       <Logo />
-      <h1 class="title">minitaller-desarrollo-dapps-substrate</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+      <h1 class="title">Mini taller de desarrollo de dApps sobre Substrate</h1>
+
+      <b-alert show>Default Alert</b-alert>
+
+      <b-alert variant="success" show>Success Alert</b-alert>
+
+      <b-alert variant="danger" show dismissible>Dismissible Alert!</b-alert>
+
+      <b-table striped hover :items="items"></b-table>
+
+      <b-button>Button</b-button>
+      <b-button variant="danger">Button</b-button>
+      <b-button variant="success">Button</b-button>
+      <b-button variant="outline-primary">Button</b-button>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      items: [
+        { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+        { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+        { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+        { age: 38, first_name: 'Jami', last_name: 'Carney' },
+      ],
+    }
+  },
+}
 </script>
 
 <style>
@@ -44,7 +50,7 @@ export default {}
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  font-size: 60px;
   color: #35495e;
   letter-spacing: 1px;
 }
